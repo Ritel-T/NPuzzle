@@ -32,7 +32,31 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+<<<<<<< HEAD
 	CRect Rect[17];
+=======
+	CRect Rect[17]/*{ {0,0,0,0},
+		{ 14,			14,			14 + 86	,			14 + 86 },
+		{ 14 + 88,		14,			14 + 88 + 86,		14 + 86 },
+		{ 14 + 2 * 88,	14,			14 + 2 * 88 + 86,	14 + 86 },
+		{ 14 + 3 * 88,	14,			14 + 3 * 88 + 86,	14 + 86 },
+
+		{ 14,			14 + 88,	14 + 86	,			14 + 88 + 86 },
+		{ 14 + 88,		14 + 88,	14 + 88 + 86,		14 + 88 + 86 },
+		{ 14 + 2 * 88,	14 + 88,	14 + 2 * 88 + 86,	14 + 88 + 86 },
+		{ 14 + 3 * 88,	14 + 88,	14 + 3 * 88 + 86,	14 + 88 + 86 },
+
+		{ 14,			14 + 2 * 88,14 + 86	,			14 + 2 * 88 + 86 },
+		{ 14 + 88,		14 + 2 * 88,14 + 88 + 86,		14 + 2 * 88 + 86 },
+		{ 14 + 2 * 88,	14 + 2 * 88,14 + 2 * 88 + 86,	14 + 2 * 88 + 86 },
+		{ 14 + 3 * 88,	14 + 2 * 88,14 + 3 * 88 + 86,	14 + 2 * 88 + 86 },
+
+		{ 14,			14 + 3 * 88,14 + 86	,			14 + 3 * 88 + 86 },
+		{ 14 + 88,		14 + 3 * 88,14 + 88 + 86,		14 + 3 * 88 + 86 },
+		{ 14 + 2 * 88,	14 + 3 * 88,14 + 2 * 88 + 86,	14 + 3 * 88 + 86 },
+		{ 14 + 3 * 88,	14 + 3 * 88,14 + 3 * 88 + 86,	14 + 3 * 88 + 86 }
+	}*/;
+>>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 	int nNumInPos[17]{ 0,
 		1, 2, 3, 4,
 		5, 6, 7, 8,
@@ -60,10 +84,19 @@ public:
 		OnStnClickedBlk9(), OnStnClickedBlk10(), OnStnClickedBlk11(), OnStnClickedBlk12(),
 		OnStnClickedBlk13(), OnStnClickedBlk14(), OnStnClickedBlk15();
 	afx_msg void OnBnClickedButton1();
+<<<<<<< HEAD
 	virtual void OnOK();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnOpen();
 	afx_msg void OnResetbrd();
 	afx_msg void OnResetimg();
 	afx_msg void OnAboutbox();
+=======
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnOpen();
+	afx_msg void OnAboutbox();
+	virtual void OnOK();
+	afx_msg void OnResetbrd();
+	afx_msg void OnResetimg();
+>>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 };
