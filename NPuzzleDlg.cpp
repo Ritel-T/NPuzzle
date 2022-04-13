@@ -86,9 +86,9 @@ BEGIN_MESSAGE_MAP(CNPuzzleDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CNPuzzleDlg::OnBnClickedButton1)
 	ON_WM_TIMER()
 	ON_COMMAND(IDM_OPEN, &CNPuzzleDlg::OnOpen)
-	ON_COMMAND(IDM_ABOUTBOX, &CNPuzzleDlg::OnAboutbox)
 	ON_COMMAND(IDM_RESETBRD, &CNPuzzleDlg::OnResetbrd)
 	ON_COMMAND(IDM_RESETIMG, &CNPuzzleDlg::OnResetimg)
+	ON_COMMAND(IDM_ABOUTBOX, &CNPuzzleDlg::OnAboutbox)
 END_MESSAGE_MAP()
 
 
@@ -104,15 +104,10 @@ BOOL CNPuzzleDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-<<<<<<< HEAD
 	// 随机数种子
 	srand(time(NULL));
 
 	// 获取方块位置
-=======
-	srand(time(NULL));
-
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 	for (int i = 1; i < 16; ++i)
 	{
 		m_Blk[i].GetWindowRect(&Rect[i]);
@@ -121,11 +116,7 @@ BOOL CNPuzzleDlg::OnInitDialog()
 	Rect[16] = { Rect[15].right, Rect[12].bottom,
 		Rect[15].right + Rect[1].Width(),
 		Rect[12].bottom + Rect[1].Height() };
-<<<<<<< HEAD
 	// 初始化
-=======
-
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 	Reset(FALSE, FALSE, TRUE);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -190,7 +181,6 @@ void CNPuzzleDlg::OnStnClickedBlk13() { MoveBlk(13); }
 void CNPuzzleDlg::OnStnClickedBlk14() { MoveBlk(14); }
 void CNPuzzleDlg::OnStnClickedBlk15() { MoveBlk(15); }
 
-<<<<<<< HEAD
 void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
 {
 	KillTimer(1);
@@ -292,8 +282,6 @@ void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
 	Invalidate();
 }
 
-=======
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 void CNPuzzleDlg::MoveBlk(int nNumClk)
 {
 	int nPosClk = nPosOfNum[nNumClk],
@@ -356,117 +344,6 @@ void CNPuzzleDlg::MoveBlk(int nNumClk)
 	CheckCpl();
 }
 
-<<<<<<< HEAD
-=======
-void CNPuzzleDlg::OnBnClickedButton1()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	Reset();
-	SetDlgItemText(IDC_BUTTON1, L"もう一回");
-}
-
-void CNPuzzleDlg::OnResetbrd()
-{
-	// TODO: 在此添加命令处理程序代码
-	Reset(FALSE, FALSE);
-	SetDlgItemText(IDC_BUTTON1, L"ミッションスタートだ！");
-}
-
-void CNPuzzleDlg::OnResetimg()
-{
-	// TODO: 在此添加命令处理程序代码
-	Reset(FALSE, FALSE, TRUE);
-	SetDlgItemText(IDC_BUTTON1, L"ミッションスタートだ！");
-}
-
-void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
-{
-	KillTimer(1);
-	nSec = 0;
-	SetDlgItemText(IDC_TIME, L"00 : 00");
-
-	if (bRand)
-	{
-		int nNumRd, nDif = 0;
-		do {
-			bool bNum[16]{ 0 };
-			nDif = 0;
-			for (int i = 1; i <= 16; ++i)
-			{
-				if (i == 16)
-				{
-					for (int j = 0; j < 16; ++j)
-						if (!bNum[j]) { nNumRd = j; break; }
-				}
-				else while (bNum[nNumRd = rand() % 16]);
-				bNum[nNumRd] = 1;
-				if (nNumRd)
-				{
-					m_Blk[nNumRd].MoveWindow(&Rect[i], FALSE);
-				}
-				nNumInPos[i] = nNumRd;
-				nPosOfNum[nNumRd] = i;
-			}
-			for (int i = 2; i <= 16; ++i)
-			{
-				for (int j = 1; j < i; ++j)
-					if (nNumInPos[j] > nNumInPos[i]) ++nDif;
-			}
-			nDif += (nPosOfNum[0] - 1) % 4 + (nPosOfNum[0] - 1) / 4;
-		} while (nDif % 2 == 0);
-	}
-	else
-	{
-		nPosOfNum[0] = 16;
-		for (int i = 1; i < 16; ++i)
-		{
-			m_Blk[i].MoveWindow(&Rect[i], FALSE);
-			nNumInPos[i] = i;
-			nPosOfNum[i] = i;
-		}
-		nNumInPos[16] = 0;
-	}
-	if (bImage)
-	{
-		int nBlkW = Rect[1].Width(), nBlkH = Rect[1].Height();
-		RECT RectImg = { 0, 0, nBlkW, nBlkH };
-
-		CImage ImgBlkBg;
-		ImgBlkBg.Create(nBlkW, nBlkH, 24);
-		for (int j = 0; j < nBlkH; ++j)
-			for (int k = 0; k < nBlkW; ++k)
-				ImgBlkBg.SetPixelRGB(k, j, 255, 255, 255);
-		for (int i = 1; i < 16; ++i)
-		{
-			CImage ImgBlk;
-			ImgBlk.Create(nBlkW, nBlkH, 24);
-
-			HDC hDC = ImgBlk.GetDC();
-			ImgBlkBg.BitBlt(hDC, 0, 0, nBlkW, nBlkH, 0, 0);
-
-			int nWidth = nBlkW / 2 - 16, nHeight = 2.3 * nWidth;
-			CFont Font;
-			Font.CreateFont(nHeight, nWidth, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"等线");
-			SelectObject(hDC, Font);
-
-			CString wszNum;
-			_itow_s(i, wszNum.GetBuffer(4), 4, 10);
-			wszNum.ReleaseBuffer();
-
-			DrawText(hDC, wszNum, wszNum.GetLength(), &RectImg, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-			ImgBlk.BitBlt(hDC, 0, 0, nBlkW, nBlkH, 0, 0);
-
-			ImgBlk.ReleaseDC();
-			m_Blk[i].SetBitmap(ImgBlk.Detach());
-		}
-	}
-	if (bTime) SetTimer(1, 1000, NULL);
-	Invalidate();
-}
-
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 void CNPuzzleDlg::CheckCpl()
 {
 	for (int i = 1; i < 16; ++i)
@@ -474,9 +351,11 @@ void CNPuzzleDlg::CheckCpl()
 		if (nPosOfNum[i] != i) return;
 	}
 	KillTimer(1);
+
+	::SetForegroundWindow(GetDesktopWindow()->m_hWnd);
+	SetForegroundWindow();
 }
 
-<<<<<<< HEAD
 void CNPuzzleDlg::LoadImg()
 {
 	CRect RectBrd(0, 0, Rect[16].right, Rect[16].bottom);
@@ -522,23 +401,6 @@ void CNPuzzleDlg::OnBnClickedButton1()
 	// TODO: 在此添加控件通知处理程序代码
 	Reset();
 	SetDlgItemText(IDC_BUTTON1, L"もう一回");
-=======
-void CNPuzzleDlg::OnTimer(UINT_PTR nIDEvent)
-{
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	++nSec;
-	if (nSec >= 60) { ++nMin; nSec %= 60; }
-	CString wszTime, wszSec, wszMin;
-	_itow_s(nSec, wszSec.GetBuffer(4), 4, 10);
-	_itow_s(nMin, wszMin.GetBuffer(4), 4, 10);
-	wszSec.ReleaseBuffer();
-	wszMin.ReleaseBuffer();
-	if (nSec < 10) wszSec.Insert(0, L"0");
-	if (nMin < 10) wszMin.Insert(0, L"0");
-	wszTime = wszMin + L" : " + wszSec;
-	SetDlgItemText(IDC_TIME, wszTime);
-	CDialogEx::OnTimer(nIDEvent);
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 }
 
 void CNPuzzleDlg::OnOK()
@@ -547,7 +409,6 @@ void CNPuzzleDlg::OnOK()
 	OnBnClickedButton1();
 }
 
-<<<<<<< HEAD
 void CNPuzzleDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
@@ -569,8 +430,6 @@ void CNPuzzleDlg::OnTimer(UINT_PTR nIDEvent)
 	CDialogEx::OnTimer(nIDEvent);
 }
 
-=======
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 void CNPuzzleDlg::OnOpen()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -587,7 +446,6 @@ void CNPuzzleDlg::OnOpen()
 	SetForegroundWindow();
 }
 
-<<<<<<< HEAD
 void CNPuzzleDlg::OnResetbrd()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -600,42 +458,6 @@ void CNPuzzleDlg::OnResetimg()
 	// TODO: 在此添加命令处理程序代码
 	Reset(FALSE, FALSE, TRUE);
 	SetDlgItemText(IDC_BUTTON1, L"ミッションスタートだ！");
-=======
-void CNPuzzleDlg::LoadImg()
-{
-	CRect RectBrd(0, 0, Rect[16].right, Rect[16].bottom);
-
-	int nBlkW = Rect[1].Width(), nBlkH = Rect[1].Height(),
-		nBrdW = RectBrd.Width(), nBrdH = RectBrd.Height();
-	if (Image.GetWidth() != nBrdW || Image.GetHeight() != nBrdH)
-	{
-		// 等比缩放到 imgTemp
-		int nSrcW = Image.GetWidth(), nSrcH = Image.GetHeight();
-		double fScale = max((double)nBrdW / nSrcW, (double)nBrdH / nSrcH);
-		int nDestW = nSrcW * fScale, nDestH = nSrcH * fScale;
-		CImage imgTemp;
-		imgTemp.Create(nDestW, nDestH, 24);
-		HDC hDCNew = imgTemp.GetDC();
-		SetStretchBltMode(hDCNew, HALFTONE);
-		Image.StretchBlt(hDCNew, 0, 0, nDestW, nDestH);
-		imgTemp.ReleaseDC();
-		Image.Destroy();
-		// 裁剪中心部分到 Image
-		Image.Create(nBrdW, nBrdH, 24);
-		imgTemp.BitBlt(Image.GetDC(), 0, 0, nBrdW, nBrdH, (nDestW - nBrdW) / 2, (nDestH - nBrdH) / 2);
-		Image.ReleaseDC();
-	}
-	for (int i = 1; i < 16; ++i)
-	{
-		CImage imgBlk;
-		imgBlk.Create(nBlkW, nBlkH, 24);
-		Image.BitBlt(imgBlk.GetDC(), 0, 0, nBlkW, nBlkH, Rect[i].left, Rect[i].top);
-		imgBlk.ReleaseDC();
-		m_Blk[i].SetBitmap(imgBlk.Detach());
-	}
-	Image.Destroy();
-	Invalidate();
->>>>>>> 3fedbf4dab22fe7c0d6a17871b2f5cb4e2874657
 }
 
 void CNPuzzleDlg::OnAboutbox()
