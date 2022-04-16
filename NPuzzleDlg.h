@@ -32,7 +32,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	CRect Rect[17];
+	CRect rctBlk[17];
 	int nNumInPos[17]{ 0,
 		1, 2, 3, 4,
 		5, 6, 7, 8,
@@ -43,7 +43,7 @@ public:
 		5, 6, 7, 8,
 		9, 10,11,12,
 		13,14,15 };
-	CImage Image;
+	CImage imgSel;
 	UINT nSec = 0, nMin = 0;
 
 	CStatic m_Blk[16];
@@ -51,6 +51,7 @@ public:
 
 	void Reset(bool bTime = TRUE, bool bRand = TRUE, bool bImage = FALSE);
 	void MoveBlk(int);
+	void SlideBlk(int, int, int);
 	void CheckCpl();
 	void LoadImg();
 
@@ -59,11 +60,26 @@ public:
 		OnStnClickedBlk5(), OnStnClickedBlk6(), OnStnClickedBlk7(), OnStnClickedBlk8(),
 		OnStnClickedBlk9(), OnStnClickedBlk10(), OnStnClickedBlk11(), OnStnClickedBlk12(),
 		OnStnClickedBlk13(), OnStnClickedBlk14(), OnStnClickedBlk15();
-	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonST();
 	virtual void OnOK();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnOpen();
-	afx_msg void OnResetbrd();
-	afx_msg void OnResetimg();
-	afx_msg void OnAboutbox();
+	afx_msg void OnResetBrd();
+	afx_msg void OnResetImg();
+	afx_msg void OnAboutBox();
+
+	struct SLIDEBLKSTRUCT
+	{
+		CNPuzzleDlg* pClass;
+		int nNum, nPosSrc, nPosDest, nSleep;
+	};
+
+	static DWORD WINAPI ThreadSlideBlk(LPVOID lParam)
+	{
+		SLIDEBLKSTRUCT sbs = *(SLIDEBLKSTRUCT*)lParam;
+		delete lParam;
+		Sleep(sbs.nSleep);
+		sbs.pClass->SlideBlk(sbs.nNum, sbs.nPosSrc, sbs.nPosDest);
+		return 0;
+	}
 };
