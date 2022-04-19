@@ -382,7 +382,7 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 	// Displacement
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-	double vx0 = ax * dT * 1.3, vy0 = ay * dT * 1.3;
+	double vx0 = ax * dT * 2, vy0 = ay * dT * 2;
 	for (; t1 <= 0.3125 * T; t1 += dT) // 加速运动
 	{
 		x1 = vx0 * t1 + 0.5 * ax * t1 * t1;
@@ -393,7 +393,7 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 	}
 	InvalidateRect(&rctMove);
 	vx0 = ax * t1, vy0 = ay * t1;
-	for (; t1 <= 0.5625 * T; t1 += dT) // 较快的匀速运动
+	for (; t1 <= 0.5375 * T; t1 += dT) // 较快的匀速运动
 	{
 		x1 += 2.0 * nMoveX / T * dT;
 		y1 += 2.0 * nMoveY / T * dT;
@@ -401,6 +401,7 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 		m_Blk[nNum].MoveWindow(&rctMove);
 		Sleep(dT);
 	}
+	InvalidateRect(&rctMove);
 
 	for (int t2 = dT; t1 <= 0.75 * T; t1 += dT, t2 += dT) // 减速运动
 	{
@@ -425,6 +426,8 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 
 	m_Blk[nNum].MoveWindow(&rctDest, FALSE);
 
+	rctDest.left -= 3; rctDest.right += 3;
+	rctDest.top -= 3; rctDest.bottom += 3;
 	InvalidateRect(&rctDest);
 }
 
