@@ -186,7 +186,7 @@ void CNPuzzleDlg::OnStnClickedBlk15() { MoveBlk(15); }
 void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
 {
 	KillTimer(1);
-	nSec = 0;
+	nSec = 0; nMin = 0;
 	SetDlgItemText(IDC_TIME, L"00 : 00");
 
 	if (bRand) // 随机生成盘面
@@ -391,7 +391,7 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 		m_Blk[nNum].MoveWindow(&rctMove);
 		Sleep(dT);
 	}
-	InvalidateRect(&rctMove);
+
 	vx0 = ax * t1, vy0 = ay * t1;
 	for (; t1 <= 0.5375 * T; t1 += dT) // 较快的匀速运动
 	{
@@ -412,7 +412,7 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 		m_Blk[nNum].MoveWindow(&rctMove);
 		Sleep(dT);
 	}
-	InvalidateRect(&rctMove);
+
 	while (TRUE) // 较慢的匀速运动
 	{
 		x2 += ax * dT * dT;
@@ -426,8 +426,8 @@ void CNPuzzleDlg::SlideBlk(int nNum, int nPosSrc, int nPosDest)
 
 	m_Blk[nNum].MoveWindow(&rctDest, FALSE);
 
-	rctDest.left -= 3; rctDest.right += 3;
-	rctDest.top -= 3; rctDest.bottom += 3;
+	rctDest.left -= 5; rctDest.right += 5;
+	rctDest.top -= 5; rctDest.bottom += 5;
 	InvalidateRect(&rctDest);
 }
 
