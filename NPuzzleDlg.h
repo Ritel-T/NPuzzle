@@ -44,7 +44,7 @@ public:
 		9, 10,11,12,
 		13,14,15 };
 	CImage imgSel;
-	UINT nSec = 0, nMin = 0;
+	UINT nSec = 0;
 
 	CStatic m_Blk[16];
 	CButton m_Btn;

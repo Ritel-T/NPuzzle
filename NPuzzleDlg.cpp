@@ -186,7 +186,7 @@ void CNPuzzleDlg::OnStnClickedBlk15() { MoveBlk(15); }
 void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
 {
 	KillTimer(1);
-	nSec = 0; nMin = 0;
+	nSec = 0;
 	SetDlgItemText(IDC_TIME, L"00 : 00");
 
 	if (bRand) // 随机生成盘面
@@ -220,13 +220,16 @@ void CNPuzzleDlg::Reset(bool bTime, bool bRand, bool bImage)
 
 		if (nDif % 2 == 0) // 无解情况
 		{
-			if (nNumInPos[15]) m_Blk[nNumInPos[15]].MoveWindow(&rctBlk[16], FALSE);
-			if (nNumInPos[16]) m_Blk[nNumInPos[16]].MoveWindow(&rctBlk[15], FALSE);
-			int t = nNumInPos[15];
-			nNumInPos[15] = nNumInPos[16];
-			nNumInPos[16] = t;
-			nPosOfNum[nNumInPos[15]] = 15;
-			nPosOfNum[nNumInPos[16]] = 16;
+			int l = 15, r = 16;
+			if (!nNumInPos[15]) l = 14;
+			if (!nNumInPos[16]) r = 14;
+			m_Blk[nNumInPos[l]].MoveWindow(&rctBlk[r], FALSE);
+			m_Blk[nNumInPos[r]].MoveWindow(&rctBlk[l], FALSE);
+			int t = nNumInPos[l];
+			nNumInPos[l] = nNumInPos[r];
+			nNumInPos[r] = t;
+			nPosOfNum[nNumInPos[l]] = l;
+			nPosOfNum[nNumInPos[r]] = r;
 		}
 	}
 	else // 恢复盘面
@@ -505,16 +508,15 @@ void CNPuzzleDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	++nSec;
-	if (nSec >= 60) { ++nMin; nSec %= 60; }
 
 	CString wszTime, wszSec, wszMin;
-	_itow_s(nSec, wszSec.GetBuffer(4), 4, 10);
-	_itow_s(nMin, wszMin.GetBuffer(4), 4, 10);
+	_itow_s(nSec % 60, wszSec.GetBuffer(4), 4, 10);
+	_itow_s(nSec / 60, wszMin.GetBuffer(4), 4, 10);
 	wszSec.ReleaseBuffer();
 	wszMin.ReleaseBuffer();
 
-	if (nSec < 10) wszSec.Insert(0, L"0");
-	if (nMin < 10) wszMin.Insert(0, L"0");
+	if (wszSec.GetLength() == 1) wszSec.Insert(0, L"0");
+	if (wszMin.GetLength() == 1) wszMin.Insert(0, L"0");
 
 	wszTime = wszMin + L" : " + wszSec;
 	SetDlgItemText(IDC_TIME, wszTime);
